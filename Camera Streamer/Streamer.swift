@@ -126,7 +126,8 @@ class Streamer: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
                     // Send data while stream queue is not empty
                     if let first = self.streamQueue.first() {
                         switch client.send(string: first) {
-                        case .success: usleep(10000)
+                        case .success:
+                            usleep(10000)
                         case .failure(let error):
                             print("[ WRN ] Streamer encounted transmission error: " + error.localizedDescription)
                             self.stop()
@@ -199,12 +200,12 @@ class Streamer: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
      
      */
     private func streamVideo(interval: Double) {
-        if let dat = self.img {
-            self.frameTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true, block: { _ in
+        self.frameTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true, block: { _ in
+            if let dat = self.img{
                 let b64 = UIImagePNGRepresentation(UIImage(cgImage: dat))?.base64EncodedString().appending("\n")
                 self.pushToStreamBuffer(string: b64!)
-            })
-        }
+            }
+        })
     }
     
     /**

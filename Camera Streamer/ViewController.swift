@@ -29,7 +29,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func connectButtonPressed(_ sender: AnyObject) {
-        
         if streamer == nil {
             streamer = Streamer()
         }
@@ -40,6 +39,7 @@ class ViewController: UIViewController {
                 // Connected
                 connectionLabel.text = connected
                 errorsTextView.isHidden = true
+                connectButton.isEnabled = false
                 print("[ INF ] Streamer open")
             } catch Streamer.StreamerConnectionError.connectionTimedOut(let err) {
                 // Failed
@@ -57,6 +57,7 @@ class ViewController: UIViewController {
         streamer?.stop()
         streamer = nil
         connectionLabel.text = disconnected
+        connectButton.isEnabled = true
     }
 }
 
